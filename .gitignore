@@ -1,0 +1,11 @@
+
+*.o
+mxm
+
+*~
+*.swp
+*.tmp
+
+.DS_Store
+.vscode/
+build/
