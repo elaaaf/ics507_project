@@ -21,21 +21,41 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    srand(42);
+
+    int m = 3, p = 4, n = 5, max_val = 10;
+
+    int **A = allocate_matrix(m, p);
+    int **B = allocate_matrix(p, n);
+
+    generate_random_matrix(A, m, p, max_val);
+    generate_random_matrix(B, p, n, max_val);
+    
+    printf("Matrix A:\n");
+    print_matrix(A, m, p);
+    printf("Matrix B:\n");
+    print_matrix(B, p, n);
+    printf("Matrix C:\n");
+
     if (strcmp(argv[1], "--seq-mul") == 0) {
-        sequential_multiplication();
+        int **C = sequential_multiplication(A, B, m, p, n);
+	print_matrix(C, m, n);
     } else if (strcmp(argv[1], "--par-mul") == 0) {
-        parallel_multiplication();
+        parallel_multiplication(A, B, m, p, n);
     } else if (strcmp(argv[1], "--seq-dc") == 0) {
-        sequential_divide_conquer();
+        sequential_divide_conquer(A, B, m, p, n);
     } else if (strcmp(argv[1], "--par-dc") == 0) {
-        parallel_divide_conquer();
+        parallel_divide_conquer(A, B, m, p, n);
     } else if (strcmp(argv[1], "--strassen") == 0) {
-        sequential_strassen();
+        sequential_strassen(A, B, m, p, n);
     } else {
         printf("Invalid option: %s\n", argv[1]);
         printf("Current Options are: [--seq-mul, --par-mul, --seq-dc, --par-dc, --strassen]\n");
         return 1;
     }
+
+    free_matrix(A, m);
+    free_matrix(B, n);
 
     return 0;
 }
