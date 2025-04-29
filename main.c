@@ -2,11 +2,12 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "mmult/sequential_multiplication.h"
-#include "mmult/parallel_multiplication.h"
-#include "mmult/sequential_divide_conquer.h"
-#include "mmult/parallel_divide_conquer.h"
-#include "mmult/sequential_strassen.h"
+#include "include/random_matrix_generator.h"
+#include "include/sequential_multiplication.h"
+#include "include/parallel_multiplication.h"
+#include "include/sequential_divide_conquer.h"
+#include "include/parallel_divide_conquer.h"
+#include "include/sequential_strassen.h"
 
 int main(int argc, char *argv[]) {
     if (argc != 2) {

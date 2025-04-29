@@ -5,8 +5,11 @@ CC = gcc
 CFLAGS = -Wall -Wextra -g #enable compiler warnings + debug mode
 
 # Files
-SRCS = $(wildcard *.c) $(wildcard mmult/*.c)
+SRCS = $(wildcard *.c) $(wildcard src/*.c) $(wildcard src/utils/*.c)
 OBJS = $(SRCS:.c=.o)
+
+# Include headers
+INCLUDES = -I include
 
 # Output file
 TARGET = mxm
@@ -20,7 +23,7 @@ $(TARGET): $(OBJS)
 
 # Compile each .c file into .o
 %.o: %.c
-	$(CC) $(CFLAGS) -c $< -o $@
+	$(CC) $(CFLAGS) $(INCLUDES) -c $< -o $@
 
 # Clean up build files
 clean:
