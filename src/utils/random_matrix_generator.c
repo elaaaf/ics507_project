@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <time.h>
 
-// Correct version
+// Allocate a matrix to the (rows, columns) size
 int** allocate_matrix(int rows, int cols) {
     int **matrix = malloc(rows * sizeof(int *));
     for (int i = 0; i < rows; i++) {
@@ -12,6 +12,7 @@ int** allocate_matrix(int rows, int cols) {
     return matrix;
 }
 
+// Fill the matrix with a random numbers
 void generate_random_matrix(int **matrix, int rows, int cols, int max_val) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -20,6 +21,7 @@ void generate_random_matrix(int **matrix, int rows, int cols, int max_val) {
     }
 }
 
+// Print the matrix for easy verification (remove when evaluating the performance)
 void print_matrix(int **matrix, int rows, int cols) {
     for (int i = 0; i < rows; i++) {
         for (int j = 0; j < cols; j++) {
@@ -29,6 +31,7 @@ void print_matrix(int **matrix, int rows, int cols) {
     }
 }
 
+// Deallocate the matrix from memory
 void free_matrix(int **matrix, int rows) {
     for (int i = 0; i < rows; i++) {
         free(matrix[i]);
