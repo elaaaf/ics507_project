@@ -9,7 +9,7 @@ This project implements multiple matrix multiplication techniques in C.
 
 - gcc
 - make
-- build-essentials
+- build-essential
 
 ## Compilation
 
