@@ -128,9 +128,27 @@ int main(int argc, char *argv[]) {
         // print_matrix(C, n, n);
         free_matrix(C, n);
         
-    } /*else if (strcmp(argv[1], "--seq-dc") == 0) {
-        C = sequential_divide_conquer(A, B, n);
-    } */else if (strcmp(argv[1], "--par-dc") == 0) {
+    else if (strcmp(argv[1], "--seq-dc") == 0) {
+        start = clock();
+        long int ** C = sequential_divide_conquer(A, B, n);
+        end = clock();
+
+        time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+        char pattern[50];
+        sprintf(pattern, "_%dx%d.txt", n, n); 
+        char *filename_segment = replace(filename, pattern, "");
+
+        sprintf(output_filename, "%s_%d_output_StraightDivAndConq.txt", filename_segment, n);
+        sprintf(time_filename, "%s_%d_info_StraightDivAndConq.txt", filename_segment, n);
+
+        write_output_to_file(output_filename, C, n);
+        write_time_to_file(time_filename, time_taken);
+
+        // print_matrix(C, n, n);
+        free_matrix(C, n);
+        }
+    } else if (strcmp(argv[1], "--par-dc") == 0) {
         int num_threads = omp_get_max_threads();
         printf("Maximum OpenMP threads available: %d\n", num_threads);
 
@@ -154,9 +172,27 @@ int main(int argc, char *argv[]) {
         free_matrix(C, n);
 
 
-    } /*else if (strcmp(argv[1], "--strassen") == 0) {
-        C = sequential_strassen(A, B, n, n, n);
-    } */else {
+    } else if (strcmp(argv[1], "--strassen") == 0) {
+             start = clock();
+        long int ** C = sequential_multiplication(A, B, n);
+        end = clock();
+
+        time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+        char pattern[50];
+        sprintf(pattern, "_%dx%d.txt", n, n); 
+        char *filename_segment = replace(filename, pattern, "");
+
+        sprintf(output_filename, "%s_%d_output_StrassenDivAndConq.txt", filename_segment, n);
+        sprintf(time_filename, "%s_%d_info_StrassenDivAndConq.txt", filename_segment, n);
+
+        write_output_to_file(output_filename, C, n);
+        write_time_to_file(time_filename, time_taken);
+
+        // print_matrix(C, n, n);
+        free_matrix(C, n);
+        C = sequential_strassen(A, B, n);
+    } else {
         printf("Invalid option: %s\n", argv[1]);
         printf("Current Options are: [--seq-mul, --par-mul, --seq-dc, --par-dc, --strassen]\n");
         return 1;
