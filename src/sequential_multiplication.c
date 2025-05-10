@@ -1,5 +1,5 @@
 #include "sequential_multiplication.h"
-#include "random_matrix_generator.h"
+#include "input_output_handeling.h"
 
 long int** sequential_multiplication(long int **A, long int **B, int n) {
 

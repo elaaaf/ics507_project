@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <string.h>
 
-#include "include/random_matrix_generator.h"
+#include "include/input_output_handeling.h"
 #include "include/sequential_multiplication.h"
 #include "include/parallel_multiplication.h"
 #include "include/sequential_divide_conquer.h"
@@ -34,6 +34,8 @@ int main(int argc, char *argv[]) {
     printf("2. Read Matrices from File\n");
     printf("Enter choice (1 or 2): ");
     scanf("%d", &mode);
+
+    char filename[256];
     
     if (mode == 1) {
     	srand(42);
@@ -57,8 +59,6 @@ int main(int argc, char *argv[]) {
     	print_matrix(B, n, n);
 
     } else if  (mode == 2) {
-	
-        char filename[256];
         printf("Enter the input filename: ");
         scanf("%s", filename);
 
@@ -76,12 +76,31 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
+    clock_t start, end;
+    double time_taken;
+    char output_filename[256];
+    char time_filename[256];
+
+
     printf("Matrix C:\n");
 
     if (strcmp(argv[1], "--seq-mul") == 0) {
+        start = clock();
         long int ** C = sequential_multiplication(A, B, n);
+        end = clock();
+
+        time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+
+
+        sprintf(output_filename, "%s_%d_output_Sequential.txt", filename, n);
+        sprintf(time_filename, "%s_%d_info_Sequential.txt", filename, n);
+
+        write_output_to_file(output_filename, C, n);
+        write_time_to_filee(time_filename, time_taken);
+
         print_matrix(C, n, n);
         free_matrix(C, n);
+
     } 
     /*else if (strcmp(argv[1], "--par-mul") == 0) {
         C = parallel_multiplication(A, B, n);
@@ -97,7 +116,6 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    
 
     free_matrix(A, n);
     free_matrix(B, n);
