@@ -11,6 +11,7 @@ This project implements multiple matrix multiplication techniques in C.
 - make
 - build-essential
 
+For Linux/WSL2 users:
 ```bash
 sudo apt-get update
 sudo apt-get install gcc make build-essential
