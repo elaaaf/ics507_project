@@ -2,7 +2,7 @@
 CC = gcc
 
 # Compiler flags
-CFLAGS = -Wall -Wextra -g #enable compiler warnings + debug mode
+CFLAGS = -Wall -Wextra -fopenmp -g #enable compiler warnings + debug mode
 
 # Files
 SRCS = $(wildcard *.c) $(wildcard src/*.c) $(wildcard src/utils/*.c)

@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <omp.h>
 
 #include "include/input_output_handeling.h"
 #include "include/sequential_multiplication.h"
@@ -104,6 +105,9 @@ int main(int argc, char *argv[]) {
 
     } 
     else if (strcmp(argv[1], "--par-mul") == 0) {
+
+	int num_threads = omp_get_max_threads();
+    	printf("Maximum OpenMP threads available: %d\n", num_threads);
 
         start = clock();
         long int ** C = parallel_multiplication(A, B, n);
