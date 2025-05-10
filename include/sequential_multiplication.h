@@ -1,6 +1,6 @@
 #ifndef SEQUENTIAL_MULTIPLICATION_H
 #define SEQUENTIAL_MULTIPLICATION_H
 
-int** sequential_multiplication();
+long int** sequential_multiplication();
 
 #endif // SEQUENTIAL_MULTIPLICATION_H

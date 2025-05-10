@@ -21,41 +21,87 @@ int main(int argc, char *argv[]) {
         return 1;
     }
 
-    srand(42);
+    const char *option = argv[1];
+    int n;
+    long int **A, **B;
 
-    int m = 3, p = 4, n = 5, max_val = 10;
 
-    int **A = allocate_matrix(m, p);
-    int **B = allocate_matrix(p, n);
 
-    generate_random_matrix(A, m, p, max_val);
-    generate_random_matrix(B, p, n, max_val);
+    int mode;
+
+    printf("Select Matrix Input Mode:\n");
+    printf("1. Randomly Generated Matrices\n");
+    printf("2. Read Matrices from File\n");
+    printf("Enter choice (1 or 2): ");
+    scanf("%d", &mode);
     
-    printf("Matrix A:\n");
-    print_matrix(A, m, p);
-    printf("Matrix B:\n");
-    print_matrix(B, p, n);
+    if (mode == 1) {
+    	srand(42);
+
+    	int max_val = 1000;
+
+        printf("Enter matrix size (must be power of 2): ");
+        scanf("%d", &n);
+
+        A = allocate_matrix(n, n);
+        B = allocate_matrix(n, n);
+
+	    //TODO: verify that n is a power of 2
+
+    	generate_random_matrix(A, n, n, max_val);
+    	generate_random_matrix(B, n, n, max_val);
+    
+    	printf("Matrix A:\n");
+    	print_matrix(A, n, n);
+    	printf("Matrix B:\n");
+    	print_matrix(B, n, n);
+
+    } else if  (mode == 2) {
+	
+        char filename[256];
+        printf("Enter the input filename: ");
+        scanf("%s", filename);
+
+        read_matrix_from_file(filename, &A, &B, &n);
+
+        printf("\nMatrix A:\n");
+            print_matrix(A, n, n);
+
+            printf("\nMatrix B:\n");
+            print_matrix(B, n, n);
+
+
+    } else {
+        printf("Error: invalid mode");
+        return 1;
+    }
+
     printf("Matrix C:\n");
 
     if (strcmp(argv[1], "--seq-mul") == 0) {
-        int **C = sequential_multiplication(A, B, m, p, n);
-	print_matrix(C, m, n);
-    } else if (strcmp(argv[1], "--par-mul") == 0) {
-        parallel_multiplication(A, B, m, p, n);
+        long int ** C = sequential_multiplication(A, B, n);
+        print_matrix(C, n, n);
+        free_matrix(C, n);
+    } 
+    /*else if (strcmp(argv[1], "--par-mul") == 0) {
+        C = parallel_multiplication(A, B, n);
     } else if (strcmp(argv[1], "--seq-dc") == 0) {
-        sequential_divide_conquer(A, B, m, p, n);
+        C = sequential_divide_conquer(A, B, n);
     } else if (strcmp(argv[1], "--par-dc") == 0) {
-        parallel_divide_conquer(A, B, m, p, n);
+        C = parallel_divide_conquer(A, B, n);
     } else if (strcmp(argv[1], "--strassen") == 0) {
-        sequential_strassen(A, B, m, p, n);
-    } else {
+        C = sequential_strassen(A, B, n, n, n);
+    } */else {
         printf("Invalid option: %s\n", argv[1]);
         printf("Current Options are: [--seq-mul, --par-mul, --seq-dc, --par-dc, --strassen]\n");
         return 1;
     }
 
-    free_matrix(A, m);
+    
+
+    free_matrix(A, n);
     free_matrix(B, n);
+    
 
     return 0;
 }

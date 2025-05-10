@@ -1,19 +1,23 @@
 #include "sequential_multiplication.h"
 #include "random_matrix_generator.h"
 
-int** sequential_multiplication(int **A, int **B, int m, int p, int n) {
+long int** sequential_multiplication(long int **A, long int **B, int n) {
 
-  int **C = allocate_matrix(m, n);
+    long int **C = allocate_matrix(n, n);
 
-  for (int i =0; i < m; i++) {
-    for (int j =0; j < n; j++) {
-      C[i][j] = 0;
-      for (int k =0; k < p; k++) {
-	C[i][j] += A[i][k] * B[k][j];
-      }
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            C[i][j] = 0;
+        }
     }
 
-  }
-    return C;
+    for (int i = 0; i < n; i++) {
+        for (int j = 0; j < n; j++) {
+            for (int k = 0; k < n; k++) {
+                C[i][j] += A[i][k] * B[k][j];
+            }
+        }
+    }
 
+    return C;
 }
