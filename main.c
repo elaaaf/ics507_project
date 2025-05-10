@@ -128,7 +128,7 @@ int main(int argc, char *argv[]) {
         // print_matrix(C, n, n);
         free_matrix(C, n);
         
-    else if (strcmp(argv[1], "--seq-dc") == 0) {
+    } else if (strcmp(argv[1], "--seq-dc") == 0) {
         start = clock();
         long int ** C = sequential_divide_conquer(A, B, n);
         end = clock();
@@ -147,7 +147,7 @@ int main(int argc, char *argv[]) {
 
         // print_matrix(C, n, n);
         free_matrix(C, n);
-        }
+        
     } else if (strcmp(argv[1], "--par-dc") == 0) {
         int num_threads = omp_get_max_threads();
         printf("Maximum OpenMP threads available: %d\n", num_threads);
