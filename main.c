@@ -119,8 +119,8 @@ int main(int argc, char *argv[]) {
         sprintf(pattern, "_%dx%d.txt", n, n); 
         char *filename_segment = replace(filename, pattern, "");
 
-        sprintf(output_filename, "%s_%d_output_ParallelP.txt", filename_segment, n);
-        sprintf(time_filename, "%s_%d_info_ParallelP.txt", filename_segment, n);
+        sprintf(output_filename, "%s_%d_output_SequentialP.txt", filename_segment, n);
+        sprintf(time_filename, "%s_%d_info_SequentialP.txt", filename_segment, n);
 
         write_output_to_file(output_filename, C, n);
         write_time_to_file(time_filename, time_taken);
