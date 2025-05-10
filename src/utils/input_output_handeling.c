@@ -80,43 +80,52 @@ void read_matrix_from_file(const char* filename, long int*** A, long int*** B, i
 }
 
 
-void write_matrix_to_file(const char* input_filename, int n, const char* method, long int** matrix) {
-    char filename[512];
-    snprintf(filename, sizeof(filename), "%s_%d_output_%s.txt", input_filename, n, method);
-    FILE* file = fopen(filename, "w");
-    if (file == NULL) {
-        printf("Error: Could not open file %s for writing.\n", filename);
-        return;
-    }
+//from https://stackoverflow.com/questions/779875/what-function-is-to-replace-a-substring-from-a-string-in-c
+char * replace(
+    char const * const original, 
+    char const * const pattern, 
+    char const * const replacement
+) {
+  size_t const replen = strlen(replacement);
+  size_t const patlen = strlen(pattern);
+  size_t const orilen = strlen(original);
 
-    for (int i = 0; i < n; i++) {
-        for (int j = 0; j < n; j++) {
-            fprintf(file, "%ld ", matrix[i][j]);
-        }
-        fprintf(file, "\n");
+  size_t patcnt = 0;
+  const char * oriptr;
+  const char * patloc;
+
+  // find how many times the pattern occurs in the original string
+  for (oriptr = original; patloc = strstr(oriptr, pattern); oriptr = patloc + patlen)
+  {
+    patcnt++;
+  }
+
+  {
+    // allocate memory for the new string
+    size_t const retlen = orilen + patcnt * (replen - patlen);
+    char * const returned = (char *) malloc( sizeof(char) * (retlen + 1) );
+
+    if (returned != NULL)
+    {
+      // copy the original string, 
+      // replacing all the instances of the pattern
+      char * retptr = returned;
+      for (oriptr = original; patloc = strstr(oriptr, pattern); oriptr = patloc + patlen)
+      {
+        size_t const skplen = patloc - oriptr;
+        // copy the section until the occurence of the pattern
+        strncpy(retptr, oriptr, skplen);
+        retptr += skplen;
+        // copy the replacement 
+        strncpy(retptr, replacement, replen);
+        retptr += replen;
+      }
+      // copy the rest of the string.
+      strcpy(retptr, oriptr);
     }
-    fclose(file);
-    printf("Matrix written to %s\n", filename);
+    return returned;
+  }
 }
-
-void write_time_to_file(const char* input_filename, int n, const char* method, double time_taken) {
-    char filename[512];
-    snprintf(filename, sizeof(filename), "%s_%d_info_%s.txt", input_filename, n, method);
-    FILE* file = fopen(filename, "w");
-    if (file == NULL) {
-        printf("Error: Could not open file %s for writing.\n", filename);
-        return;
-    }
-
-    int hours = (int)(time_taken / 3600);
-    int minutes = (int)((time_taken - hours * 3600) / 60);
-    int seconds = (int)(time_taken - hours * 3600 - minutes * 60);
-
-    fprintf(file, "Time taken: %02d:%02d:%02d\n", hours, minutes, seconds);
-    fclose(file);
-    printf("Time written to %s\n", filename);
-}
-
 
 
 void write_output_to_file(const char* filename, long int** matrix, int n) {
@@ -136,7 +145,7 @@ void write_output_to_file(const char* filename, long int** matrix, int n) {
     fclose(file);
 }
 
-void write_time_to_filee(const char* filename, double time_taken) {
+void write_time_to_file(const char* filename, double time_taken) {
     FILE* file = fopen(filename, "w");
     if (file == NULL) {
         printf("Error: Could not open file %s for writing\n", filename);
@@ -149,4 +158,36 @@ void write_time_to_filee(const char* filename, double time_taken) {
 
     fprintf(file, "Time taken: %02d:%02d:%02d\n", hours, minutes, seconds);
     fclose(file);
+}
+
+void generate_matrix_file(const char* filename, int n) {
+    FILE *file = fopen(filename, "w");
+    if (file == NULL) {
+        printf("Error: Could not open file %s for writing.\n", filename);
+        return;
+    }
+
+    fprintf(file, "%d\n", n);
+    srand(time(NULL));
+
+    printf("Generating Matrix A...\n");
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            int value = (rand() % 19) - 9;  // Random number between -9 and 9
+            fprintf(file, "%d ", value);
+        }
+        fprintf(file, "\n");
+    }
+
+    printf("Generating Matrix B...\n");
+    for (int i = 0; i < n; ++i) {
+        for (int j = 0; j < n; ++j) {
+            int value = (rand() % 19) - 9;  // Random number between -9 and 9
+            fprintf(file, "%d ", value);
+        }
+        fprintf(file, "\n");
+    }
+
+    fclose(file);
+    printf("Matrix file generated successfully: %s\n", filename);
 }

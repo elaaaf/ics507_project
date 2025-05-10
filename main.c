@@ -30,33 +30,31 @@ int main(int argc, char *argv[]) {
     int mode;
 
     printf("Select Matrix Input Mode:\n");
-    printf("1. Randomly Generated Matrices\n");
-    printf("2. Read Matrices from File\n");
+    printf("1. Generate Matrix File and Read\n");
+    printf("2. Read Matrices from File (for debugging)\n");
     printf("Enter choice (1 or 2): ");
     scanf("%d", &mode);
 
     char filename[256];
     
     if (mode == 1) {
-    	srand(42);
-
-    	int max_val = 1000;
-
         printf("Enter matrix size (must be power of 2): ");
         scanf("%d", &n);
 
-        A = allocate_matrix(n, n);
-        B = allocate_matrix(n, n);
+        // Set a filename for the generated matrix file
+        sprintf(filename, "generated_matrix_%dx%d.txt", n, n);
 
-	    //TODO: verify that n is a power of 2
+        // Generate the matrix file
+        generate_matrix_file(filename, n);
 
-    	generate_random_matrix(A, n, n, max_val);
-    	generate_random_matrix(B, n, n, max_val);
-    
-    	printf("Matrix A:\n");
-    	print_matrix(A, n, n);
-    	printf("Matrix B:\n");
-    	print_matrix(B, n, n);
+        // Read the matrices from the generated file
+        read_matrix_from_file(filename, &A, &B, &n);
+
+        // printf("\nMatrix A:\n");
+        // print_matrix(A, n, n);
+
+        // printf("\nMatrix B:\n");
+        // print_matrix(B, n, n);
 
     } else if  (mode == 2) {
         printf("Enter the input filename: ");
@@ -64,17 +62,17 @@ int main(int argc, char *argv[]) {
 
         read_matrix_from_file(filename, &A, &B, &n);
 
-        printf("\nMatrix A:\n");
-            print_matrix(A, n, n);
+        // printf("\nMatrix A:\n");
+        // print_matrix(A, n, n);
 
-            printf("\nMatrix B:\n");
-            print_matrix(B, n, n);
-
+        // printf("\nMatrix B:\n");
+        // print_matrix(B, n, n);
 
     } else {
         printf("Error: invalid mode");
         return 1;
     }
+
 
     clock_t start, end;
     double time_taken;
@@ -82,7 +80,7 @@ int main(int argc, char *argv[]) {
     char time_filename[256];
 
 
-    printf("Matrix C:\n");
+    //printf("Matrix C:\n");
 
     if (strcmp(argv[1], "--seq-mul") == 0) {
         start = clock();
@@ -91,14 +89,17 @@ int main(int argc, char *argv[]) {
 
         time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
 
+        char pattern[50];
+        sprintf(pattern, "_%dx%d.txt", n, n); 
+        char *filename_segment = replace(filename, pattern, "");
 
-        sprintf(output_filename, "%s_%d_output_Sequential.txt", filename, n);
-        sprintf(time_filename, "%s_%d_info_Sequential.txt", filename, n);
+        sprintf(output_filename, "%s_%d_output_Sequential.txt", filename_segment, n);
+        sprintf(time_filename, "%s_%d_info_Sequential.txt", filename_segment, n);
 
         write_output_to_file(output_filename, C, n);
-        write_time_to_filee(time_filename, time_taken);
+        write_time_to_file(time_filename, time_taken);
 
-        print_matrix(C, n, n);
+        // print_matrix(C, n, n);
         free_matrix(C, n);
 
     } 
