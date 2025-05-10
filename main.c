@@ -106,21 +106,21 @@ int main(int argc, char *argv[]) {
     } 
     else if (strcmp(argv[1], "--par-mul") == 0) {
 
-	int num_threads = omp_get_max_threads();
-    	printf("Maximum OpenMP threads available: %d\n", num_threads);
+        int num_threads = omp_get_max_threads();
+        printf("Maximum OpenMP threads available: %d\n", num_threads);
 
-        start = clock();
-        long int ** C = parallel_multiplication(A, B, n);
-        end = clock();
+        double start_time = omp_get_wtime();
+        long int **C = parallel_multiplication(A, B, n);
+        double end_time = omp_get_wtime();
 
-        time_taken = ((double)(end - start)) / CLOCKS_PER_SEC;
+        double time_taken = end_time - start_time;
 
         char pattern[50];
         sprintf(pattern, "_%dx%d.txt", n, n); 
         char *filename_segment = replace(filename, pattern, "");
 
-        sprintf(output_filename, "%s_%d_output_SequentialP.txt", filename_segment, n);
-        sprintf(time_filename, "%s_%d_info_SequentialP.txt", filename_segment, n);
+        sprintf(output_filename, "%s_%d_output_ParallelP.txt", filename_segment, n);
+        sprintf(time_filename, "%s_%d_info_ParallelP.txt", filename_segment, n);
 
         write_output_to_file(output_filename, C, n);
         write_time_to_file(time_filename, time_taken);
