@@ -75,3 +75,8 @@ When using the "Read Matrices from File" option, the input file should follow th
 ```
 
 
+## OPM Thread control
+Change thread number before compilition with
+```bash
+ export OMP_NUM_THREADS=X
+```
